@@ -7,12 +7,22 @@ import React from "react";
 import ShimmerPlaceHolder from "react-native-shimmer-placeholder";
 import {Image, StyleSheet} from "react-native";
 
-const BookCover: () => React$Node = ({uri, fallbackImage}) => {
+type Props = {|
+    uri: string,
+    fallbackImage: ?string
+|}
 
-    const [bookImageState, setBookImageState] = React.useState({loading: true, error: false});
+type State = {|
+    loading: boolean,
+    error: boolean
+|}
+
+const BookCover: () => React$Node = ({uri, fallbackImage}: Props) => {
+
+    const [bookImageState: State, setBookImageState] = React.useState({loading: true, error: false});
 
     return (
-        <ShimmerPlaceHolder autoRun={true} visible={true} style={styles.imageMainContainer}>
+        <ShimmerPlaceHolder autoRun visible style={styles.imageMainContainer}>
             <Image
                 loadingIndicatorSource={fallbackImage}
                 style={{...styles.imageMainContainer, opacity: bookImageState.loading ? 0 : 1}}

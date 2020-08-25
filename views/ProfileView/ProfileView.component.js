@@ -6,8 +6,13 @@
 import React from 'react';
 import {View, Text, StyleSheet, SafeAreaView, Image} from 'react-native';
 import BookSection from "../../components/BookSection/BookSection.component";
+import type {Navigation} from "../../types";
 
-const ProfileView: () => React$Node = (props) => {
+type Props = {|
+    navigation: Navigation
+|}
+
+const ProfileView: () => React$Node = ({navigation}: Props) => {
 
     function generateSections() {
         return [
@@ -24,9 +29,9 @@ const ProfileView: () => React$Node = (props) => {
                 url: 'http://localhost:3000/books/search?q=love'
             },
         ].map(
-            ({title, url}) => {
+            (section: { title: string, url: string }) => {
                 return (
-                    <BookSection navigation={props.navigation} key={title} url={url} title={title}/>
+                    <BookSection navigation={navigation} key={section.title} url={section.url} title={section.title}/>
                 )
             }
         );
@@ -40,7 +45,8 @@ const ProfileView: () => React$Node = (props) => {
                 <View style={{padding: 20}}>
                     <View style={styles.infoSectionContainer}>
                         <View style={styles.profileImageContainer}>
-                            <Image style={{height: '100%', width: '100%'}} source={{uri: 'https://media.vanityfair.com/photos/57acf79821b609ea061cefd7/master/w_600,h_720,c_limit/ana-de-armas-ss04.jpg'}}/>
+                            <Image style={{height: '100%', width: '100%'}}
+                                   source={{uri: 'https://media.vanityfair.com/photos/57acf79821b609ea061cefd7/master/w_600,h_720,c_limit/ana-de-armas-ss04.jpg'}}/>
                         </View>
                         <View style={{alignItems: 'center', justifyContent: 'center'}}>
                             <Text style={styles.infoTextName}>John Doe</Text>

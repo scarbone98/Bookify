@@ -6,11 +6,16 @@
 import React from 'react';
 import {View, SafeAreaView, StyleSheet, Text, ScrollView} from 'react-native';
 import BookCover from "../../components/BookCover/BookCover.component";
+import type {BookInformation, Navigation} from "../../types";
 
-const BookView: () => React$Node = (props) => {
+type Props = {|
+    navigation: Navigation
+|};
 
-    const {bookInfo} = props.navigation.state.params;
-    const {volumeInfo} = bookInfo;
+const BookView: () => React$Node = ({navigation}: Props) => {
+
+    const {bookInfo} = navigation.state.params;
+    const {volumeInfo}: { volumeInfo: BookInformation } = bookInfo;
 
     function wrappedText(text, style) {
         return (

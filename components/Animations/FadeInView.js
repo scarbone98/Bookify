@@ -5,7 +5,13 @@
 import React from 'react';
 import { Animated } from 'react-native';
 
-const FadeInView: () => React$Node = ({duration, style, children}) => {
+type Props = {|
+    duration: ?number,
+    style: ?any,
+    children: Array<React$Node>
+|}
+
+const FadeInView: () => React$Node = ({duration, style, children}: Props) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
 
     React.useEffect(() => {

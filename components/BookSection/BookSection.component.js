@@ -6,14 +6,28 @@
 import React from "react";
 import {FlatList, Text, TouchableOpacity, View, StyleSheet} from "react-native";
 import BookCover from "../BookCover/BookCover.component";
-import LottieView from "../Animations/LottieView";
+import type {BookInformation, Navigation} from "../../types";
 
-const BookSection: () => React$Node = ({title, url, navigation}) => {
+type Props = {|
+    title: string,
+    url: string,
+    navigation: Navigation
+|}
+
+type State = {|
+    loading: boolean,
+    error: boolean,
+    data: ?Array<any>
+|}
+
+const BookSection: () => React$Node = ({title, url, navigation}: Props) => {
 
     React.useEffect(() => {
         const controller = new AbortController();
         const {signal} = controller;
+
         fetchBookSectionData();
+
         return () => {
             if (signal && signal.abort) {
                 signal.abort();
@@ -21,7 +35,9 @@ const BookSection: () => React$Node = ({title, url, navigation}) => {
         }
     }, []);
 
-    async function fetchBookSectionData(signal) {
+    const [bookSectionState: State, setBookSectionState] = React.useState({loading: true, error: false, data: []})
+
+    async function fetchBookSectionData(signal: AbortSignal) {
         try {
             const items = await fetch(url, {signal}).then((response) => response.json()).then((json) => json.items);
             setBookSectionState({data: items, error: false, loading: false});
@@ -30,16 +46,14 @@ const BookSection: () => React$Node = ({title, url, navigation}) => {
         }
     }
 
-    const [bookSectionState, setBookSectionState] = React.useState({loading: true, error: false, data: []})
-
-    function renderItem({item}) {
+    function renderItem({item}: { volumeInfo: BookInformation }) {
         const {volumeInfo} = item;
         return (
             <TouchableOpacity
                 onPress={() => navigation.navigate('Book', {bookInfo: item})}
                 style={styles.bookImageContainer}
             >
-                <BookCover uri={volumeInfo.imageLinks.thumbnail}/>
+                <BookCover uri={volumeInfo.imageLinks && volumeInfo.imageLinks.thumbnail}/>
             </TouchableOpacity>
         )
     }

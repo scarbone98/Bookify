@@ -7,13 +7,20 @@ import React from 'react';
 import {View, SafeAreaView, StyleSheet, TextInput, Text} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FadeInView from "../../components/Animations/FadeInView";
+import type {Navigation} from "../../types";
 
+type Props = {|
+    navigation: Navigation
+|};
 
-const HomeView: () => React$Node = (props) => {
+type SearchState = {|
+    searchTerm: string,
+    visible: boolean
+|}
 
-    const [searchState, setSearchState] = React.useState({searchTerm: '', visible: false})
+const HomeView: () => React$Node = ({navigation}: Props) => {
 
-    const {navigation} = props;
+    const [searchState: SearchState, setSearchState] = React.useState({searchTerm: '', visible: false})
 
     function renderHeader() {
         return (
